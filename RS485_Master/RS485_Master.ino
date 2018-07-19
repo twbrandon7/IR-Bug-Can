@@ -1,16 +1,13 @@
-/* YourDuino SoftwareSerialExample1
-   - Connect to another Arduino running "YD_SoftwareSerialExampleRS485_1Remote"
-   - Connect this unit Pins 10, 11, Gnd
-   - Pin 3 used for RS485 direction control
-   - To other unit Pins 11,10, Gnd  (Cross over)
-   - Open Serial Monitor, type in top window. 
-   - Should see same characters echoed back from remote Arduino
-
-   Questions: terry@yourduino.com 
+/* 
+ *  RS485 Module Master Example (Read data from bug can)
+ *  Author : Li-Xian Chen (b0543017@ems.niu.edu.tw)
+ *  2018/07/19
+ *  
+ *  Reference : YourDuino SoftwareSerialExample1
+ *  https://arduino-info.wikispaces.com/SoftwareSerialRS485Example
 */
-
-/*-----( Import needed libraries )-----*/
 #include <SoftwareSerial.h>
+
 /*-----( Declare Constants and Pin Numbers )-----*/
 #define SSerialRX        10  //Serial Receive pin
 #define SSerialTX        11  //Serial Transmit pin
@@ -20,23 +17,19 @@
 #define RS485Transmit    HIGH
 #define RS485Receive     LOW
 
-#define Pin13LED         7
+#define PinTransmissionLED         7
 
 /*-----( Declare objects )-----*/
 SoftwareSerial RS485Serial(SSerialRX, SSerialTX); // RX, TX
 
 /*-----( Declare Variables )-----*/
 int byteReceived;
-int byteSend;
 
-void setup()   /****** SETUP: RUNS ONCE ******/
-{
+void setup() {
   // Start the built-in serial port, probably to Serial Monitor
   Serial.begin(9600);
-  Serial.println("YourDuino.com SoftwareSerial remote loop example");
-  Serial.println("Use Serial Monitor, type in upper window, ENTER");
-  
-  pinMode(Pin13LED, OUTPUT);   
+   
+  pinMode(PinTransmissionLED, OUTPUT);   
   pinMode(SSerialTxControl, OUTPUT);    
   
   digitalWrite(SSerialTxControl, RS485Receive);  // Init Transceiver   
@@ -44,36 +37,17 @@ void setup()   /****** SETUP: RUNS ONCE ******/
   // Start the software serial port, to another device
   RS485Serial.begin(4800);   // set the data rate 
 
-}//--(end setup )---
+}
 
-
-void loop()   /****** LOOP: RUNS CONSTANTLY ******/
-{
-  digitalWrite(Pin13LED, HIGH);  // Show activity
-  if (Serial.available())
-  {
-    byteReceived = Serial.read();
-    
-    digitalWrite(SSerialTxControl, RS485Transmit);  // Enable RS485 Transmit   
-    RS485Serial.write(byteReceived);          // Send byte to Remote Arduino
-    
-    digitalWrite(Pin13LED, LOW);  // Show activity    
-    delay(10);
-    digitalWrite(SSerialTxControl, RS485Receive);  // Disable RS485 Transmit       
-  }
+void loop() {
+  digitalWrite(PinTransmissionLED, HIGH);  // Show activity
   
-  if (RS485Serial.available())  //Look for data from other Arduino
-   {
-    digitalWrite(Pin13LED, HIGH);  // Show activity
+  if (RS485Serial.available()) {
+    digitalWrite(PinTransmissionLED, LOW);  // Show activity
     byteReceived = RS485Serial.read();    // Read received byte
-    Serial.write(byteReceived);        // Show on Serial Monitor
+    Serial.println(byteReceived);        // Show on Serial Monitor
     delay(10);
-    digitalWrite(Pin13LED, LOW);  // Show activity   
-   }  
+    digitalWrite(PinTransmissionLED, HIGH);  // Show activity   
+  }  
 
-}//--(end main loop )---
-
-/*-----( Declare User-written Functions )-----*/
-
-//NONE
-//*********( THE END )***********
+}
