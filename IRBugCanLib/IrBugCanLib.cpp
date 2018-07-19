@@ -67,7 +67,7 @@ void IrBugCanLib::readData(IrBugCanData &data)
         {
             dataArr[i] = this->hexToDec(bufferStr.substring(i * 4, i * 4 + 4));
         }
-        if (dataArr[0] == -1 && dataArr[len - 1] == -2)
+        if (dataArr[0] == DATA_START_VAL && dataArr[len - 1] == DATA_END_VAL)
         {
             data.time_pass = dataArr[1];
             data.bug_pest = dataArr[2];
