@@ -9,16 +9,16 @@
 #include <IrBugCanLib.h>
 
 /*-----( Declare Constants and Pin Numbers )-----*/
-#define SSerialRX        10  //Serial Receive pin
-#define SSerialTX        11  //Serial Transmit pin
+#define PinRX        10  //pin which connected to RO
+#define PinTX        11  //pin which connected to DI
 
-#define SSerialTxControl 3   //RS485 Direction control
+#define PinTXControl 3   //RS485 Direction control
 #define PinTransmissionLED 13
 #define CommunicationBaudRate 4800
 
 /*-----( Declare objects )-----*/
-SoftwareSerial RS485Serial(SSerialRX, SSerialTX); // RX, TX
-IrBugCanLib irBugCanLib(&RS485Serial, SSerialTxControl, PinTransmissionLED, CommunicationBaudRate);
+SoftwareSerial RS485Serial(PinRX, PinTX); // RX, TX
+IrBugCanLib irBugCanLib(&RS485Serial, PinTXControl, PinTransmissionLED, CommunicationBaudRate);
 
 void setup() {
   // Start the built-in serial port, probably to Serial Monitor
