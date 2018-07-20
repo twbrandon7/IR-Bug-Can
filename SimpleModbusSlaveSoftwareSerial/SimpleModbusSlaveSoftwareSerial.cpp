@@ -20,10 +20,10 @@ void exceptionResponse(unsigned char exception);
 unsigned int calculateCRC(unsigned char bufferSize); 
 void sendPacket(unsigned char bufferSize);
 
-SoftwareSerial mySerial(10, 11);
+SoftwareSerial *mySerial;
 
 SoftwareSerial *getSerial(){
-  return &mySerial;
+  return mySerial;
 }
 
 unsigned int modbus_update(unsigned int *holdingRegs)
@@ -32,7 +32,7 @@ unsigned int modbus_update(unsigned int *holdingRegs)
   unsigned char overflow = 0;
   
   bool has_data = false;
-  while (mySerial.available())
+  while (mySerial->available())
   {
     has_data = true;
     //Serial.println("!!");
@@ -40,12 +40,12 @@ unsigned int modbus_update(unsigned int *holdingRegs)
     // If more bytes is received than the BUFFER_SIZE the overflow flag will be set and the 
     // serial buffer will be red untill all the data is cleared from the receive buffer.
     if (overflow) 
-      mySerial.read();
+      mySerial->read();
     else
     {
       if (buffer == BUFFER_SIZE)
         overflow = 1;
-      frame[buffer] = mySerial.read();
+      frame[buffer] = mySerial->read();
       // Serial.print(String(frame[buffer]) + " ");
       buffer++;
     }
@@ -216,10 +216,11 @@ void exceptionResponse(unsigned char exception)
   }
 }
 
-void modbus_configure(long baud, unsigned char _slaveID, unsigned char _TxEnablePin, unsigned int _holdingRegsSize)
+void modbus_configure(SoftwareSerial *serial, long baud, unsigned char _slaveID, unsigned char _TxEnablePin, unsigned int _holdingRegsSize)
 {
+  mySerial = serial;
   slaveID = _slaveID;
-  mySerial.begin(baud);
+  mySerial->begin(baud);
   
   if (_TxEnablePin > 1) 
   { // pin 0 & pin 1 are reserved for RX/TX. To disable set txenpin < 2
@@ -280,9 +281,9 @@ void sendPacket(unsigned char bufferSize)
     digitalWrite(TxEnablePin, HIGH);
     
   for (unsigned char i = 0; i < bufferSize; i++)
-    mySerial.write(frame[i]);
+    mySerial->write(frame[i]);
     
-  mySerial.flush();
+  mySerial->flush();
   
   // allow a frame delay to indicate end of transmission
   delayMicroseconds(T3_5); 
