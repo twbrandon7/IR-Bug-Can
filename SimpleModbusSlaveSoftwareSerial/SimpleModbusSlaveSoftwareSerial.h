@@ -83,9 +83,10 @@
 #include "SoftwareSerial.h"
 
 // function definitions
-void modbus_configure(long baud, byte _slaveID, byte _TxEnablePin, unsigned int _holdingRegsSize);
+void modbus_configure(SoftwareSerial *, long baud, byte _slaveID, byte _TxEnablePin, unsigned int _holdingRegsSize);
 unsigned int modbus_update(unsigned int *holdingRegs);
 SoftwareSerial *getSerial();
+bool isConnected();
  
 
 #endif

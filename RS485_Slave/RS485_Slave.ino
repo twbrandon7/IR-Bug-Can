@@ -51,6 +51,8 @@ void setup() {
   timeLast = millis();
 }
 
+bool lastConnectionStatus = false;
+
 void loop() {
   if(digitalRead(PinSimulationButton)){
     bugPestCount++;
@@ -60,6 +62,11 @@ void loop() {
   holdingRegs[TOTAL_ERRORS] = modbus_update(holdingRegs);
   holdingRegs[TIME_PASS] = 0;
   holdingRegs[BUG_PEST] = bugPestCount;
+  if(isConnected() && !lastConnectionStatus){
+    Serial.println("Connected");
+  }else if(!isConnected() && lastConnectionStatus){
+    Serial.println("Disconnected");
+  }
 //  if(millis() >= timeLast + ReportDuration){
 //    int actualDuration = (int) ((millis() - timeLast) / 1000); //minute
 //    
@@ -69,4 +76,5 @@ void loop() {
 //    Serial.println("SENT");
 //    timeLast = millis();
 //  }
+  lastConnectionStatus = isConnected();
 }

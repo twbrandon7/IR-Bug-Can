@@ -20,14 +20,21 @@ void exceptionResponse(unsigned char exception);
 unsigned int calculateCRC(unsigned char bufferSize); 
 void sendPacket(unsigned char bufferSize);
 
+bool is_connected;
+
 SoftwareSerial *mySerial;
 
 SoftwareSerial *getSerial(){
   return mySerial;
 }
 
+bool isConnected(){
+  return is_connected;
+}
+
 unsigned int modbus_update(unsigned int *holdingRegs)
 {
+  is_connected = false;
   unsigned char buffer = 0;
   unsigned char overflow = 0;
   
@@ -51,8 +58,6 @@ unsigned int modbus_update(unsigned int *holdingRegs)
     }
     delayMicroseconds(T1_5); // inter character time out
   }
-  if(has_data)
-    // Serial.println("");
   
   // If an overflow occurred increment the errorCount
   // variable and return to the main sketch without 
@@ -194,7 +199,9 @@ unsigned int modbus_update(unsigned int *holdingRegs)
     errorCount++; // corrupted packet
     // Serial.println("corrupted packet | buffer > 0 && buffer < 8");
   }
-    
+  if(has_data && errorCount == 0){
+    is_connected = true;
+  }
   return errorCount;
 }       
 
@@ -251,6 +258,7 @@ void modbus_configure(SoftwareSerial *serial, long baud, unsigned char _slaveID,
   
   holdingRegsSize = _holdingRegsSize;
   errorCount = 0; // initialize errorCount
+  is_connected = false;
 }   
 
 unsigned int calculateCRC(byte bufferSize) 
