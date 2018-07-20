@@ -39,6 +39,7 @@
 |DE and RE|pin 3|
 |RO|pin 10|
 |DI|pin 11|
+
 ![接線概觀](https://lh3.googleusercontent.com/w3lIfGIho3Mc1TEgZTIB1WhlJHfyxhJkMExcUSowExYsqddjVDjsO081lMPq8Q5nLVhAptXBfTuk)
 
 接線主要是要確定Arduino作為TX的pin要接到RS485模組的DI，RX的pin要接上RS485模組的RO。兩個RS485模組之間A接A、B接B。另外模組上的DE與RE要一同接上Arduino的同一個pin作為TxControll，當TxControll是HIGH的時候，代表送資料，LOW代表收資料。
