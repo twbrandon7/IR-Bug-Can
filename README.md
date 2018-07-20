@@ -75,75 +75,75 @@
 
 ### Slave (蟲罐)端使用方式
 ```cpp
-    //先引入標頭檔
-    #include <IrBugCanLib.h>
-    
-    /* 建構出SoftwareSerial物件，建構子的地方要填入兩個參數
-     * PinRX : 要作為RX的pin，這個pin將會連接RS485模組的RO
-     * PinTX : 要作為TX的pin，這個pin將會連接RS485模組的DI
-     */
-	SoftwareSerial RS485Serial(PinRX, PinTX); // RX, TX
-	
-	/* 建構出IrBugCanLib物件，建構子的地方要填入以下參數
-     * &RS485Serial : SoftwareSerial物件的指標
-     * PinTXControl : 要作為TXControl的pin，會連接RS485模組的DE和RE
-     * PinTransmissionLED : 傳輸提示LED，傳輸資料時將會閃爍。設定為-1表示不使用。
-     * CommunicationBaudRate : 傳輸資料使用的Baud rate，Master與Slave必須設定為相同的數值。
-     */
-	IrBugCanLib irBugCanLib(&RS485Serial, PinTXControl, PinTransmissionLED, CommunicationBaudRate);
-	
-	void setup() {
-	  //記得在setup()裡面呼叫，作為初始化
-	  irBugCanLib.begin();
-	}
-	
-	void loop() {
-	  /*
-	   * 送出資料時可以調用snedData()
-	   * actualDuration : (int) 經過時間
-	   * bugPestCount : (int) 害蟲數量
-	   * */
-      irBugCanLib.snedData(actualDuration, bugPestCount);
-      delay(5000);
-	}
+//先引入標頭檔
+#include <IrBugCanLib.h>
+
+/* 建構出SoftwareSerial物件，建構子的地方要填入兩個參數
+ * PinRX : 要作為RX的pin，這個pin將會連接RS485模組的RO
+ * PinTX : 要作為TX的pin，這個pin將會連接RS485模組的DI
+ */
+SoftwareSerial RS485Serial(PinRX, PinTX); // RX, TX
+
+/* 建構出IrBugCanLib物件，建構子的地方要填入以下參數
+ * &RS485Serial : SoftwareSerial物件的指標
+ * PinTXControl : 要作為TXControl的pin，會連接RS485模組的DE和RE
+ * PinTransmissionLED : 傳輸提示LED，傳輸資料時將會閃爍。設定為-1表示不使用。
+ * CommunicationBaudRate : 傳輸資料使用的Baud rate，Master與Slave必須設定為相同的數值。
+ */
+IrBugCanLib irBugCanLib(&RS485Serial, PinTXControl, PinTransmissionLED, CommunicationBaudRate);
+
+void setup() {
+  //記得在setup()裡面呼叫，作為初始化
+  irBugCanLib.begin();
+}
+
+void loop() {
+  /*
+   * 送出資料時可以調用snedData()
+   * actualDuration : (int) 經過時間
+   * bugPestCount : (int) 害蟲數量
+   * */
+  irBugCanLib.snedData(actualDuration, bugPestCount);
+  delay(5000);
+}
 ```
 
 ### Master (田間系)端
 ```cpp
-    //先引入標頭檔
-    #include <IrBugCanLib.h>
-    
-    /* 建構出SoftwareSerial物件，建構子的地方要填入兩個參數
-     * PinRX : 要作為RX的pin，這個pin將會連接RS485模組的RO
-     * PinTX : 要作為TX的pin，這個pin將會連接RS485模組的DI
-     */
-	SoftwareSerial RS485Serial(PinRX, PinTX); // RX, TX
-	
-	/* 建構出IrBugCanLib物件，建構子的地方要填入以下參數
-     * &RS485Serial : SoftwareSerial物件的指標
-     * PinTXControl : 要作為TXControl的pin，會連接RS485模組的DE和RE
-     * PinTransmissionLED : 傳輸提示LED，傳輸資料時將會閃爍。設定為-1表示不使用。
-     * CommunicationBaudRate : 傳輸資料使用的Baud rate，Master與Slave必須設定為相同的數值。
-     */
-	IrBugCanLib irBugCanLib(&RS485Serial, PinTXControl, PinTransmissionLED, CommunicationBaudRate);
-	
-	void setup() {
-	  //記得在setup()裡面呼叫，作為初始化
-	  irBugCanLib.begin();
-	}
-	
-	void loop() {
-	  //接收資料的部分寫在這
-	  IrBugCanData data; //先宣告出一個struct來收資料
-	  irBugCanLib.readData(data); // 將struct傳入，交由readData()這個method來寫入資料。
-	  if(data.has_data) // 如果有收資料的話
-	  { 
-	    //印出經過時間
-		Serial.println("Time Pass : " + String(data.time_pass));
-		//印出害蟲數量
-		Serial.println("Bug Pest : " + String(data.bug_pest));
-	  }
-	}
+//先引入標頭檔
+#include <IrBugCanLib.h>
+
+/* 建構出SoftwareSerial物件，建構子的地方要填入兩個參數
+ * PinRX : 要作為RX的pin，這個pin將會連接RS485模組的RO
+ * PinTX : 要作為TX的pin，這個pin將會連接RS485模組的DI
+ */
+SoftwareSerial RS485Serial(PinRX, PinTX); // RX, TX
+
+/* 建構出IrBugCanLib物件，建構子的地方要填入以下參數
+ * &RS485Serial : SoftwareSerial物件的指標
+ * PinTXControl : 要作為TXControl的pin，會連接RS485模組的DE和RE
+ * PinTransmissionLED : 傳輸提示LED，傳輸資料時將會閃爍。設定為-1表示不使用。
+ * CommunicationBaudRate : 傳輸資料使用的Baud rate，Master與Slave必須設定為相同的數值。
+ */
+IrBugCanLib irBugCanLib(&RS485Serial, PinTXControl, PinTransmissionLED, CommunicationBaudRate);
+
+void setup() {
+  //記得在setup()裡面呼叫，作為初始化
+  irBugCanLib.begin();
+}
+
+void loop() {
+  //接收資料的部分寫在這
+  IrBugCanData data; //先宣告出一個struct來收資料
+  irBugCanLib.readData(data); // 將struct傳入，交由readData()這個method來寫入資料。
+  if(data.has_data) // 如果有收資料的話
+  { 
+	//印出經過時間
+	Serial.println("Time Pass : " + String(data.time_pass));
+	//印出害蟲數量
+	Serial.println("Bug Pest : " + String(data.bug_pest));
+  }
+}
 ```
 
 ## 田間系統要怎麼串接上蟲罐?
@@ -177,40 +177,40 @@
 請先下載並安裝[IR Bug Can Lib](https://github.com/twbrandon7/IR-Bug-Can/tree/master/IRBugCanLib)。使用方式如下 : 
 
 ```cpp
-    //先引入標頭檔
-    #include <IrBugCanLib.h>
-    
-    /* 建構出SoftwareSerial物件，建構子的地方要填入兩個參數
-     * PinRX : 要作為RX的pin，這個pin將會連接RS485模組的RO
-     * PinTX : 要作為TX的pin，這個pin將會連接RS485模組的DI
-     */
-	SoftwareSerial RS485Serial(PinRX, PinTX); // RX, TX
-	
-	/* 建構出IrBugCanLib物件，建構子的地方要填入以下參數
-     * &RS485Serial : SoftwareSerial物件的指標
-     * PinTXControl : 要作為TXControl的pin，會連接RS485模組的DE和RE
-     * PinTransmissionLED : 傳輸提示LED，傳輸資料時將會閃爍。設定為-1表示不使用。
-     * CommunicationBaudRate : 傳輸資料使用的Baud rate，Master與Slave必須設定為相同的數值。
-     */
-	IrBugCanLib irBugCanLib(&RS485Serial, PinTXControl, PinTransmissionLED, CommunicationBaudRate);
-	
-	void setup() {
-	  //記得在setup()裡面呼叫，作為初始化
-	  irBugCanLib.begin();
-	}
-	
-	void loop() {
-	  //接收資料的部分寫在這
-	  IrBugCanData data; //先宣告出一個struct來收資料
-	  irBugCanLib.readData(data); // 將struct傳入，交由readData()這個method來寫入資料。
-	  if(data.has_data) // 如果有收資料的話
-	  { 
-	    //印出經過時間
-		Serial.println("Time Pass : " + String(data.time_pass));
-		//印出害蟲數量
-		Serial.println("Bug Pest : " + String(data.bug_pest));
-	  }
-	}
+//先引入標頭檔
+#include <IrBugCanLib.h>
+
+/* 建構出SoftwareSerial物件，建構子的地方要填入兩個參數
+ * PinRX : 要作為RX的pin，這個pin將會連接RS485模組的RO
+ * PinTX : 要作為TX的pin，這個pin將會連接RS485模組的DI
+ */
+SoftwareSerial RS485Serial(PinRX, PinTX); // RX, TX
+
+/* 建構出IrBugCanLib物件，建構子的地方要填入以下參數
+ * &RS485Serial : SoftwareSerial物件的指標
+ * PinTXControl : 要作為TXControl的pin，會連接RS485模組的DE和RE
+ * PinTransmissionLED : 傳輸提示LED，傳輸資料時將會閃爍。設定為-1表示不使用。
+ * CommunicationBaudRate : 傳輸資料使用的Baud rate，Master與Slave必須設定為相同的數值。
+ */
+IrBugCanLib irBugCanLib(&RS485Serial, PinTXControl, PinTransmissionLED, CommunicationBaudRate);
+
+void setup() {
+  //記得在setup()裡面呼叫，作為初始化
+  irBugCanLib.begin();
+}
+
+void loop() {
+  //接收資料的部分寫在這
+  IrBugCanData data; //先宣告出一個struct來收資料
+  irBugCanLib.readData(data); // 將struct傳入，交由readData()這個method來寫入資料。
+  if(data.has_data) // 如果有收資料的話
+  { 
+	//印出經過時間
+	Serial.println("Time Pass : " + String(data.time_pass));
+	//印出害蟲數量
+	Serial.println("Bug Pest : " + String(data.bug_pest));
+  }
+}
 ```
 	
 ## TODO List
