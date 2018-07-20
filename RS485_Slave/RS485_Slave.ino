@@ -43,7 +43,7 @@ void loop() {
   }
 
   if(millis() >= timeLast + ReportDuration){
-    int actualDuration = (int) (millis() - timeLast);
+    int actualDuration = (int) ((millis() - timeLast) / 1000); //minute
     
     irBugCanLib.snedData(actualDuration, bugPestCount);
     
