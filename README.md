@@ -151,9 +151,12 @@ void loop() {
 
 ### 硬體
 因為Arduino並不能直接使用RS485，因此需要額外連接RS485模組。所需硬體清單如下 : 
+
+
 |名稱|數量|
 |--|--|
 | [RS485通訊模組](https://www.taiwaniot.com.tw/product/ttl-to-rs485rs422-max485-module/) | 1 |
+
 
 ### 接線
 選定3個pin分別作為TX、RX、TXControl。之後蟲罐就只會有兩個pin對外連接(即RS485 Module 的 A 和 B)。
