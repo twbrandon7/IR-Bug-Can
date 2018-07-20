@@ -108,7 +108,7 @@ void loop() {
 }
 ```
 
-### Master (田間系)端
+### Master (田間系統)端
 ```cpp
 //先引入標頭檔
 #include <IrBugCanLib.h>
