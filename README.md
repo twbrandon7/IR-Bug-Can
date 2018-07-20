@@ -74,7 +74,7 @@
 網址 : [https://github.com/twbrandon7/IR-Bug-Can/tree/master/IRBugCanLib](https://github.com/twbrandon7/IR-Bug-Can/tree/master/IRBugCanLib)
 
 ### Slave (蟲罐)端使用方式
-
+```cpp
     //先引入標頭檔
     #include <IrBugCanLib.h>
     
@@ -106,9 +106,10 @@
       irBugCanLib.snedData(actualDuration, bugPestCount);
       delay(5000);
 	}
-
+```
 
 ### Master (田間系)端
+```cpp
     //先引入標頭檔
     #include <IrBugCanLib.h>
     
@@ -143,6 +144,7 @@
 		Serial.println("Bug Pest : " + String(data.bug_pest));
 	  }
 	}
+```
 
 ## 田間系統要怎麼串接上蟲罐?
 在這裡做個總整理。
@@ -174,6 +176,7 @@
 ### 韌體
 請先下載並安裝[IR Bug Can Lib](https://github.com/twbrandon7/IR-Bug-Can/tree/master/IRBugCanLib)。使用方式如下 : 
 
+```cpp
     //先引入標頭檔
     #include <IrBugCanLib.h>
     
@@ -208,7 +211,8 @@
 		Serial.println("Bug Pest : " + String(data.bug_pest));
 	  }
 	}
-
+```
+	
 ## TODO List
 - 直接使用ModBus傳輸協定
 - 添加Slave端的程式說明
