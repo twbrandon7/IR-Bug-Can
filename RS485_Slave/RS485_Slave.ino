@@ -14,7 +14,7 @@
 
 #define PinTXControl 2   //RS485 Direction control
 #define PinTransmissionLED 13
-#define CommunicationBaudRate 57600
+#define ModbusBaud 9600
 #define DeviceId 3
 #define DataLength 16
 #define TimeoutArrLen 16
@@ -56,11 +56,11 @@ void setup() {
   au16data[END] = -1;
   data[END] = -1;
 
-  slave.begin(&rs485Serial, CommunicationBaudRate); // baud-rate at 19200
+  slave.begin(&rs485Serial, ModbusBaud);
   slave.setTimeOut(1500);
   
   pinMode(PinSimulationButton, INPUT); 
-  Serial.begin(9600);
+  Serial.begin(57600);
   
   timeLast = millis();
 }
