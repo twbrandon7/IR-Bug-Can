@@ -15,7 +15,7 @@
 |Device ID|3|
 |Register總長度|5|
 
-<br/><br/>
+<br/>
 
 ### Register Address
 |Address|名稱|Function Code|型態|說明|
@@ -26,16 +26,18 @@
 |0003H|BUG_PEST|03H|int|從上次連線開始到這次連線開始所累積的害蟲數|
 |0004H|END|03H|int|資料結尾，固定為-1|
 
-<br/><br/>
+<br/>
 
 ## TODO List
 - 實際串接上蟲罐
 - 改寫RS485 Modbus library，讓其支援限制對Register的讀寫
-<br/><br/>
+
+<br/>
+
 ## 使用到的RS485 Modbus library
 [https://github.com/smarmengol/Modbus-Master-Slave-for-Arduino](https://github.com/smarmengol/Modbus-Master-Slave-for-Arduino)
 
-<br/><br/>
+<br/>
 
 ## 測試時所使用的接線
 在這裡稍微紀錄一下我開發/測試/學習的經過。
@@ -52,14 +54,14 @@
 |D10|RO|
 |D11|DI|
 
-<br/><br/>
+<br/>
 
 #### The Wiring of Slave and simulated bug can
 |Arduino Nano|Bug Can (just a button...)|
 |--|--|
 |pin7 (Input)|Push Button|
 
-<br/><br/>
+<br/>
 
 ![RS485 Modbus RTU](https://lh3.googleusercontent.com/EZoe38OZlClwqqRVyda3E6jxNoF2i8D_2Ek4QqCO5r9T5XDlKpI9Wd0amvubdxM2S5cJ3SDLCZ_b)
 
@@ -71,14 +73,14 @@
 - [modbus?關於modbus RTU的使用說明II](http://www.xuan.idv.tw/wordpress/?p=2427)
 - [Modbus - Wikipedia](https://en.wikipedia.org/wiki/Modbus)
 
-<br/><br/>
+<br/>
 
 ## 後記
 我測試的程式碼可以在這裡找到 : 
 - Slave (蟲罐端) : [RS485_Slave](https://github.com/twbrandon7/IR-Bug-Can/tree/modbus/RS485_Slave "RS485_Slave")
 - Master (模擬田間系統端) : 使用PC模擬，軟體 : [Modbus Master Simulator](http://en.radzio.dxp.pl/modbus-master-simulator/)
-- 
-<br/><br/>
+
+<br/>
 
 2018/07/21 Li-Xian Chen @ NIU CSIE<br/>
 b0543017@ems.niu.edu.tw
