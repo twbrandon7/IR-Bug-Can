@@ -3,8 +3,8 @@
 ## 說明
 本專案承接於 [ChiShengChen/pure_agri_bugcan_pest-counter](https://github.com/ChiShengChen/pure_agri_bugcan_pest-counter)
 <br/><br/>
-這個Repository的目標是使用RS485通訊標準，並且使用Modbus RTU作為通訊協定。目標是讓田間系統可以向蟲罐讀取數值。因此，蟲罐蟲罐計數害蟲通過的程式碼在這裡僅以簡單的按鈕取代(並不是正式版本)，本說明也將注重在通訊的部分。<br/><br/>
-關於之前做錯的程式碼與說明仍可以在這個Repository的[master](https://github.com/twbrandon7/IR-Bug-Can/tree/master) branch看到。
+這個Repository的目標是使用RS485通訊標準，並且使用Modbus RTU作為通訊協定，將蟲罐的資料傳輸給田間系統。目前已經完成所有的設置與連接。<br/><br/>
+關於之前沒有使用Modbus的版本，程式碼與說明仍可以在這個Repository的[master](https://github.com/twbrandon7/IR-Bug-Can/tree/master) branch看到。
 
 ## 規格
 |項目|數值|
@@ -28,9 +28,21 @@
 
 <br/>
 
-## TODO List
-- 實際串接上蟲罐
-- 改寫RS485 Modbus library，讓其支援限制對Register的讀寫
+## 機制
+在這裡簡略說明蟲罐的機制。<br/>
+蟲罐是一個Slave，會等待Master對其建立連線。在這邊我將連線的定義設定為 : Master開始對Slave Polling，兩次polling的時間間隔如果小於1500ms，則視為同一次連線，否則視為Timeout，連線中斷。<br/>
+- 每當一個連線開始 : 
+ - 蟲罐會回傳一組固定的數值不再變動，並且將計數歸零，在背景重新開始累積。
+- 每當一個連線結束 : 
+ - 不做任何動作。
+
+因此，Master建立連線後取得的數值將會是固定的。而Master將會取得以下資訊 : 
+- 從上次連線開始到這次連線開始所經過的時間(小時)
+- 從上次連線開始到這次連線開始所經過的時間(分鐘)
+- 從上次連線開始到這次連線開始所經過的時間(秒)
+- 從上次連線開始到這次連線開始所累積的害蟲數
+(詳見表 "Register Address")<br/>
+在應用上，Master可以藉由建立連線的時間減去經過的時間，得到一個精準的累計時間間隔。
 
 <br/>
 
@@ -56,10 +68,12 @@
 
 <br/>
 
-#### The Wiring of Slave and simulated bug can
-|Arduino Nano|Bug Can (just a button...)|
+#### The Wiring of Slave and IR Bugcan
+|Arduino Nano|Bugcan|
 |--|--|
-|pin7 (Input)|Push Button|
+|A4 (Input)|White wire|
+|5V|Red wire|
+|GND|Black wire|
 
 <br/>
 
@@ -82,5 +96,5 @@
 
 <br/>
 
-2018/07/21 Li-Xian Chen @ NIU CSIE<br/>
+2018/07/25 Li-Xian Chen @ NIU CSIE<br/>
 b0543017@ems.niu.edu.tw
