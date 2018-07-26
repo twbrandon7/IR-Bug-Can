@@ -13,11 +13,12 @@
 #define PinTX        11  //pin which connected to DI
 
 #define PinTXControl 2   //RS485 Direction control (DE, RE in RS485 Module)
+#define PinBugLED 5
+#define PinConnectedLED 6
 #define PinTransmissionLED 13
 #define ModbusBaud 9600
 #define DeviceId 3
 
-#define SignalEdge 30 //if the IR analog input lower then this number, it means a bug went through.
 #define IrPin 4  //the pin that connect to the IR receiver.
 
 enum{
@@ -65,14 +66,17 @@ void setup() {
   slave.setTimeOut(1500);
   
   pinMode(IrPin, INPUT_PULLUP);
+  
   pinMode(PinTransmissionLED, OUTPUT);
-  Serial.begin(57600);
+  pinMode(PinBugLED, OUTPUT);
+  pinMode(PinConnectedLED, OUTPUT);
   
   timeLast = millis();
+  Serial.begin(57600);
 }
 
 void loop() {
-  if(tick % 250 == 0){
+  if(tick % 100 == 0){
     countBugPest();
   }
   doModbusSlave();
@@ -91,6 +95,13 @@ void doModbusSlave(){
   }
   
   slave.poll( data, DATA_LENGTH );
+  if(!slave.getTimeOutState()){
+    digitalWrite(PinTransmissionLED, LOW);
+    delay(50);
+    digitalWrite(PinTransmissionLED, HIGH);
+    delay(50);
+    digitalWrite(PinTransmissionLED, LOW);
+  }
 
   if(millis() - timeLast >= 1000){
     addSecond();
@@ -99,30 +110,34 @@ void doModbusSlave(){
   
   if(lastTimeOutState && !slave.getTimeOutState()){ //Connected
     bugCount = 0;
-    digitalWrite(PinTransmissionLED, HIGH);
+    digitalWrite(PinConnectedLED, HIGH);
     resetTimer();
   }else if(!lastTimeOutState && slave.getTimeOutState()){ //Disconnected
     //
-    digitalWrite(PinTransmissionLED, LOW);
+    digitalWrite(PinConnectedLED, LOW);
   }
   
   lastTimeOutState = slave.getTimeOutState();
 }
 
 void countBugPest(){
-  if(!isLastIrBlock && isIrBlock()){
-    //Serial.println("BUG ENTER");
+  bool irBlock = isIrBlock();
+  if(!isLastIrBlock && irBlock){
+//    Serial.println("BUG ENTER");
     bugCount++;
+    digitalWrite(PinBugLED, HIGH);
+    delay(50);
+    digitalWrite(PinBugLED, LOW);
   }
-  if(isLastIrBlock && !isIrBlock()){
-    //Serial.println("BUG LEAVE");
+  if(isLastIrBlock && !irBlock){
+//    Serial.println("BUG LEAVE");
   }
-  isLastIrBlock = isIrBlock();
+  isLastIrBlock = irBlock;
 }
 
 bool isIrBlock(){
-  irSignal = analogRead(IrPin);
-  if(irSignal < SignalEdge) {
+  irSignal = digitalRead(IrPin);
+  if(irSignal == LOW) {
     return true;
   } else {
     return false;

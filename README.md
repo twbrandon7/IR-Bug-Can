@@ -71,7 +71,7 @@
 #### The Wiring of Slave and IR Bugcan
 |Arduino Nano|Bugcan|
 |--|--|
-|A4 (Input)|White wire|
+|D4 (Input)|White wire|
 |5V|Red wire|
 |GND|Black wire|
 
