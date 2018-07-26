@@ -77,7 +77,7 @@
 
 <br/>
 
-![RS485 Modbus RTU](https://lh3.googleusercontent.com/EZoe38OZlClwqqRVyda3E6jxNoF2i8D_2Ek4QqCO5r9T5XDlKpI9Wd0amvubdxM2S5cJ3SDLCZ_b)
+![RS485 Modbus RTU](https://i.imgur.com/xL7LqVv.png)
 
 <br/>
 
