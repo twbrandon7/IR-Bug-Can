@@ -43,7 +43,9 @@ uint16_t data[DATA_LENGTH];
 unsigned int bugCount = 0, hours = 0, minutes = 0, seconds = 0;
 bool isLastIrBlock = false;
 unsigned int irSignal = 0;
-unsigned int lastTick = 0;
+long lastTick = 0;
+unsigned int idleCount = 0;
+long ildeTick = 0;
 
 unsigned long timeLast;
 bool lastTimeOutState = true;
@@ -80,6 +82,17 @@ void loop() {
     countBugPest();
     lastTick = millis();
   }
+
+  if(idleCount > 0) {
+    if(millis() - ildeTick >= 1000) {
+      idleCount++;
+      ildeTick = millis();
+    }
+    if(idleCount >= 5) {
+      idleCount = 0;
+    }
+  }
+  
   doModbusSlave();
   delay(1);
 }
@@ -124,10 +137,13 @@ void countBugPest(){
   bool irBlock = isIrBlock();
   if(!isLastIrBlock && irBlock){
 //    Serial.println("BUG ENTER");
-    bugCount++;
-    digitalWrite(PinBugLED, HIGH);
-    delay(50);
-    digitalWrite(PinBugLED, LOW);
+    if(idleCount == 0) {
+      bugCount++;
+      idleCount++;
+      digitalWrite(PinBugLED, HIGH);
+      delay(50);
+      digitalWrite(PinBugLED, LOW);
+    }
   }
   if(isLastIrBlock && !irBlock){
 //    Serial.println("BUG LEAVE");
