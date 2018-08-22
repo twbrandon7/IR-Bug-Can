@@ -75,8 +75,6 @@ void setup() {
   Serial.begin(57600);
 }
 
-long timeLastTest = 0;
-
 void loop() {
   if(millis() - lastTick >= 100){ 
     countBugPest();
