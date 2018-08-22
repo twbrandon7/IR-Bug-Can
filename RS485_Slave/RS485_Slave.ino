@@ -12,7 +12,7 @@
 #define PinRX        10  //pin which connected to RO
 #define PinTX        11  //pin which connected to DI
 
-#define PinTXControl 2   //RS485 Direction control (DE, RE in RS485 Module)
+#define PinTXControl 9   //RS485 Direction control (DE, RE in RS485 Module)
 #define PinBugLED 5
 #define PinConnectedLED 6
 #define PinTransmissionLED 13
@@ -43,7 +43,7 @@ uint16_t data[DATA_LENGTH];
 unsigned int bugCount = 0, hours = 0, minutes = 0, seconds = 0;
 bool isLastIrBlock = false;
 unsigned int irSignal = 0;
-unsigned int tick = 0;
+unsigned int lastTick = 0;
 
 unsigned long timeLast;
 bool lastTimeOutState = true;
@@ -75,12 +75,14 @@ void setup() {
   Serial.begin(57600);
 }
 
+long timeLastTest = 0;
+
 void loop() {
-  if(tick % 100 == 0){
+  if(millis() - lastTick >= 100){ 
     countBugPest();
+    lastTick = millis();
   }
   doModbusSlave();
-  tick = (tick +1) % 5000;
   delay(1);
 }
 
