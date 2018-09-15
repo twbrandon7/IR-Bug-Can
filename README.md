@@ -51,8 +51,9 @@
 
 <br/>
 
-## 測試時所使用的接線
-在這裡稍微紀錄一下我開發/測試/學習的經過。
+## 接線 / 程式
+在這裡稍微紀錄一下我開發/測試/學習的經過。<br/>
+按照以下接線可以直接適用於本Repository的Arduino程式。
 
 <br/>
 
@@ -62,7 +63,7 @@
 |--|--|
 |3.3V|VCC|
 |GND|GND|
-|R3|DE and RE|
+|D9|DE and RE|
 |D10|RO|
 |D11|DI|
 
@@ -78,6 +79,27 @@
 <br/>
 
 ![RS485 Modbus RTU](https://i.imgur.com/xL7LqVv.png)
+
+<br/>
+
+### 關於韌體的設定
+
+如果接線有所更動，你可以到RS485_Slave.ino找到以下設定並修改。
+```
+/*-----( Declare Constants and Pin Numbers )-----*/
+#define PinRX        10  //pin which connected to RO
+#define PinTX        11  //pin which connected to DI
+
+#define PinTXControl 9   //RS485 Direction control (DE, RE in RS485 Module)
+#define PinBugLED 5
+#define PinConnectedLED 6
+#define PinTransmissionLED 13
+#define ModbusBaud 9600
+#define DeviceId 3
+
+#define IrPin 4  //the pin that connect to the IR receiver.
+
+```
 
 <br/>
 
